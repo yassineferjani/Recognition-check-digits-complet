@@ -18,8 +18,11 @@ def segmentChiffre(image, orig):
     res = vertical_segmentation(dil)
 
     for i in range(len(res)):
-        segment.append(horizontal_segment(orig[:, res[i][0]:res[i][1]])[0])
-        position.append(horizontal_segment(orig[:, res[i][0]:res[i][1]])[1])
+        chiffre = horizontal_segment(orig[:, res[i][0]:res[i][1]])[0]
+        h, w = chiffre.shape
+        if h * w > 10:
+            segment.append(chiffre)
+            position.append(horizontal_segment(orig[:, res[i][0]:res[i][1]])[1])
 
     return segment, position
 
@@ -44,11 +47,11 @@ def Pred_one_digit(digit, model=model_one):
         if (h + 10 >= w):
 
             r = h / w
-            dil = cv2.resize(digit, (int(np.ceil(32 / r)), 32))
+            dil = cv2.resize(digit, (int(np.ceil(35 / r)), 35))
         else:
 
             r = w / h
-            dil = cv2.resize(digit, (32, int(np.ceil(32 / r))))
+            dil = cv2.resize(digit, (35, int(np.ceil(35 / r))))
 
         h, w = dil.shape
         yoff = round((64 - h) / 2)
@@ -116,38 +119,42 @@ def prediction(image, orig):
     digits, pos = segmentChiffre(image, orig)
     mean_upper = np.mean([pt[0] for pt in pos])
     mean_lower = np.mean([pt[1] for pt in pos])
-    mean_height = np.mean([pt[0] - pt[1] for pt in pos])
+    mean_height = np.mean([pt[1] - pt[0] for pt in pos])
 
     predictions = []
     taux = []
-    for i,digit in enumerate(digits):
-        if (digit.shape[0]*digit.shape[1]>10):
-            len_dig = LengthPrediction(digit)
+    for idx in range(len(pos)):
+        if pos[idx][1] - pos[idx][0] >= mean_height:
+            x = idx
+            break
+    for i in range(x,len(digits)):
 
-            h1=pos[i][1]-pos[i][0]
-            if np.argmax(len_dig) == 0:
-                pred, tau = Pred_one_digit(digit)
-                if (pos[i][1] < old_height / 2):
-                    pred = ''
-                if (abs(pos[i][0] - mean_lower) < abs(pos[i][0] - mean_upper) or (h1 < mean_height)):
-                    pred = '.'
-                predictions.append(pred)
-                taux.append(tau)
+        len_dig = LengthPrediction(digits[i])
 
-            elif np.argmax(len_dig) == 1:
-                pred, tau = Pred_two_digit(digit)
-                if pred in list(range(10)):
-                    pred='0'+ str(pred)
-                predictions.append(pred)
-                taux.append(tau)
+        if np.argmax(len_dig) == 0:
+            pred, tau = Pred_one_digit(digits[i])
+            if (pos[i][1] < old_height / 2):
+                pred = ''
+            if (abs(pos[i][0] - mean_lower) < abs(pos[i][0] - mean_upper)):
+                pred = '.'
+            predictions.append(pred)
+            taux.append(tau)
 
-            elif np.argmax(len_dig) == 2:
-                pred, tau = Pred_three_digit(digit)
-                if pred in list(range(10)):
-                    pred='00'+ str(pred)
-                if pred in list(range(10,100)):
-                    pred = '0' + str(pred)
-                predictions.append(pred)
-                taux.append(tau)
+        elif np.argmax(len_dig) == 1:
+            pred, tau = Pred_two_digit(digits[i])
+            if pred in list(range(10)):
+                pred='0'+ str(pred)
+            predictions.append(pred)
+            taux.append(tau)
+
+        elif np.argmax(len_dig) == 2:
+            pred, tau = Pred_three_digit(digits[i])
+            if pred in list(range(10)):
+                pred='00'+ str(pred)
+            if pred in list(range(10,100)):
+                pred = '0' + str(pred)
+            predictions.append(pred)
+            taux.append(tau)
+
 
     return predictions, taux
