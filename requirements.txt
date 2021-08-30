@@ -1,0 +1,14 @@
+Flask==1.1.2
+h5py==2.10.0
+Keras==2.4.3
+matplotlib @ file:///C:/ci/matplotlib-base_1603355780617/work
+numpy @ file:///C:/ci/numpy_and_numpy_base_1603466732592/work
+numpydoc @ file:///tmp/build/80754af9/numpydoc_1605117425582/work
+opencv-contrib-python==4.5.1.48
+pandas @ file:///C:/ci/pandas_1602083338010/work
+pickleshare==0.7.5
+tensorboard==2.5.0
+tensorboard-data-server==0.6.0
+tensorboard-plugin-wit==1.8.0
+tensorflow==2.4.1
+
