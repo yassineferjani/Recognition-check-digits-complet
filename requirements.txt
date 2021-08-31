@@ -1,10 +1,9 @@
-Flask==1.1.2
-h5py==2.10.0
-Keras==2.4.3
-matplotlib
+Flask
+h5py
+Keras
 numpy
-opencv-contrib-python==4.5.1.48
+opencv-contrib-python
 pandas
-pickleshare==0.7.5
-tensorflow==2.4.1
+pickleshare
+tensorflow
 

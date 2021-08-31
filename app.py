@@ -64,10 +64,10 @@ def upload_predict():
         chiffre, pres=resultPreparation(montant,taux)
         pres= round(pres*100,2)
 
-        return render_template("index.html", prediction=chiffre, precision=pres, imagelocation=image_file.filename)
+        return render_template("./index.html", prediction=chiffre, precision=pres, imagelocation=image_file.filename)
 
 
-    return render_template("index.html", prediction=None, precision=None, imagelocation=None)
+    return render_template("./index.html", prediction=None, precision=None, imagelocation=None)
 
 if __name__ == '__main__':
     app.run()
