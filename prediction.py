@@ -1,6 +1,3 @@
-import cv2
-import matplotlib.pyplot as plt
-
 from preprocess import *
 from keras.models import load_model
 
