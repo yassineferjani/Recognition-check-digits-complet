@@ -5,5 +5,4 @@ numpy
 opencv-contrib-python
 pandas
 pickleshare
-tensorflow
 
