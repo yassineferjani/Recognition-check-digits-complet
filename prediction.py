@@ -1,6 +1,6 @@
 from preprocess import *
 from keras.models import load_model
-
+#Loading models
 model_length = load_model('LengthModel0908.h5')
 model_one= load_model('modelonedigitupdated.h5')
 model_two= load_model('model_two_1407_updated.h5')
@@ -8,6 +8,12 @@ model_Three= load_model('chiffre3Model1307_complet.h5')
 
 
 def segmentChiffre(image, orig):
+    """
+
+    :param image: Binary image
+    :param orig: The original image
+    :return: segmented digits and their positions
+    """
     segment = []
     position = []
     kernel = np.ones((3, 3), dtype=np.int8)

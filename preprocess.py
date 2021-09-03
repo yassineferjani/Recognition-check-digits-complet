@@ -39,6 +39,13 @@ def preprocess(gray_image):
 
 
 def segmentation(image, mode):
+    """
+
+    :param image: binary image
+    :param mode: 1 for the horizontal segmentation and 0 for the vertical segmentation
+    :return: Sequences of the regions containing information
+
+    """
     if mode == 0:
 
         pix_density = []
@@ -69,6 +76,12 @@ def segmentation(image, mode):
 
 
 def horizontal_segmentimage1(imgorig, image):
+    """
+
+    :param imgorig: The original image
+    :param image: The binary image
+    :return: return the largest region horizontally of the original image
+    """
     segs = segmentation(image, 1)
     max = 0
     idx = 0
@@ -82,6 +95,11 @@ def horizontal_segmentimage1(imgorig, image):
 
 
 def horizontal_segment(image):
+    """
+
+    :param image: The binary image
+    :return: return the largest region horizontally of the binary image
+    """
     segs = segmentation(image, 1)
     max = 0
     idx = 0
@@ -95,6 +113,11 @@ def horizontal_segment(image):
 
 
 def vertical_segmentation(image):
+    """
+
+    :param image: The binary image
+    :return: returns vertical regions of the binary image
+    """
     segs = segmentation(image, 0)
 
     chiffres = []
